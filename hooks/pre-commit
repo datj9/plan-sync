@@ -1,0 +1,7 @@
+#!/bin/sh
+# Pre-commit hook for plan-sync. Runs the secret scanner on staged diffs.
+# Bypass with `git commit --no-verify` if you must (and you know why).
+set -e
+
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+exec node "$REPO_ROOT/scripts/check-secrets.mjs"

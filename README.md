@@ -77,6 +77,17 @@ npm test            # 27 tests across store, claim, session
 npm run build       # tsc, no emit issues
 ```
 
+## Pre-commit hook
+
+`npm install` (or `npm run prepare` once) sets `core.hooksPath=hooks`, which enables `hooks/pre-commit`. The hook runs `scripts/check-secrets.mjs` against staged additions and blocks the commit if it detects any of:
+
+- AWS access keys, GitHub tokens, Slack tokens, Stripe keys, Google API keys
+- Private key blocks (`-----BEGIN ... PRIVATE KEY-----`)
+- JWT-shaped strings
+- Generic `api_key=...` / `secret=...` / `password=...` assignments with 20+ char values
+
+To bypass for a verified false positive: `git commit --no-verify`. Use sparingly.
+
 ## Status
 
 v0. Working: init, plan new, task new/claim/status/release/show, session start/heartbeat/gc, sync, ls. Auto-sync via git wrapper. 27 tests passing.
